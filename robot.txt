@@ -1,0 +1,4 @@
+User-agent: *
+Allow: /
+
+Sitemap: https://mariellebouahni-tech.github.io/Mon-Telephone-est-plein/sitemap.xml
