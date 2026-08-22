@@ -1,0 +1,2916 @@
+<!DOCTYPE html>
+<html lang="fr">
+
+<head>
+
+<meta charset="UTF-8">
+
+<meta
+    name="viewport"
+    content="width=device-width, initial-scale=1.0"
+>
+
+<title>Mon Téléphone est Plein – Libérez de l'espace facilement</title>
+    
+    <meta
+    name="description"
+    content="Analysez vos fichiers, trouvez les fichiers lourds et les doublons, compressez vos images, optimisez vos PDF et utilisez gratuitement plusieurs outils en ligne."
+>
+
+<meta
+    name="keywords"
+    content="libérer espace téléphone, téléphone plein, compresser image, optimiser PDF, fichiers en double, outils gratuits en ligne"
+>
+
+<meta
+    name="author"
+    content="Mon Téléphone est Plein"
+>
+
+<meta
+    name="robots"
+    content="index, follow"
+>
+
+<link
+    rel="canonical"
+    href="https://TON-SITE.github.io/"
+>
+
+<script src="https://unpkg.com/pdf-lib@1.16.0/dist/pdf-lib.min.js"></script>
+    
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jszip/3.10.1/jszip.min.js"></script>
+
+<style>
+
+/* =========================
+   BASE
+   ========================= */
+
+* {
+    box-sizing: border-box;
+    margin: 0;
+    padding: 0;
+}
+
+body {
+    font-family: Arial, sans-serif;
+    background: #F5F1E8;
+    color: #222;
+    min-height: 100vh;
+}
+
+header {
+    background: #F77F00;
+    color: white;
+    padding: 22px 18px;
+    text-align: center;
+}
+
+header h1 {
+    font-size: 24px;
+    margin-bottom: 8px;
+}
+
+header p {
+    font-size: 14px;
+}
+
+main {
+    width: 100%;
+    max-width: 600px;
+    margin: auto;
+    padding: 20px;
+}
+
+
+/* =========================
+   CARTES
+   ========================= */
+
+.card {
+    background: white;
+    border-radius: 18px;
+    padding: 20px;
+    margin-bottom: 18px;
+    box-shadow: 0 4px 15px rgba(0,0,0,0.08);
+}
+
+
+/* =========================
+   TITRES DE SECTIONS
+   ========================= */
+
+.section-title {
+    font-size: 20px;
+    font-weight: bold;
+    margin: 28px 0 12px;
+}
+
+
+/* =========================
+   BOUTON FICHIER
+   ========================= */
+
+.select-button {
+    display: block;
+    background: #F77F00;
+    color: white;
+    padding: 15px;
+    border-radius: 12px;
+    text-align: center;
+    font-weight: bold;
+    cursor: pointer;
+    margin-top: 15px;
+}
+
+.select-button input {
+    display: none;
+}
+
+
+/* =========================
+   STOCKAGE
+   ========================= */
+
+.storage {
+    text-align: center;
+}
+
+.storage-number {
+    font-size: 36px;
+    font-weight: bold;
+    color: #F77F00;
+    margin: 10px 0;
+}
+
+.progress {
+    width: 100%;
+    height: 18px;
+    background: #eee;
+    border-radius: 20px;
+    overflow: hidden;
+    margin-top: 15px;
+}
+
+.progress-bar {
+    height: 100%;
+    width: 0%;
+    background: #F77F00;
+    transition: width 0.4s;
+}
+
+.warning {
+    background: #fff3cd;
+    border-radius: 12px;
+    padding: 12px;
+    margin-top: 15px;
+    display: none;
+}
+
+
+/* =========================
+   LISTE FICHIERS
+   ========================= */
+
+.file {
+    display: flex;
+    justify-content: space-between;
+    gap: 10px;
+    padding: 12px 0;
+    border-bottom: 1px solid #eee;
+}
+
+.file:last-child {
+    border-bottom: none;
+}
+
+.file-name {
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+}
+
+.file-size {
+    font-weight: bold;
+    white-space: nowrap;
+}
+
+.empty {
+    text-align: center;
+    color: #777;
+    padding: 20px 0;
+}
+
+
+/* =========================
+   PRIORITÉS
+   ========================= */
+
+.priority-item {
+    padding: 12px 0;
+    border-bottom: 1px solid #eee;
+}
+
+.priority-item:last-child {
+    border-bottom: none;
+}
+
+.priority-name {
+    font-weight: bold;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+}
+
+.priority-size {
+    color: #F77F00;
+    font-weight: bold;
+    margin-top: 5px;
+}
+
+
+/* =========================
+   RÉSULTATS
+   ========================= */
+
+.result {
+    background: #f8f8f8;
+    padding: 12px;
+    border-radius: 12px;
+    margin-top: 15px;
+    font-weight: bold;
+}
+
+
+/* =========================
+   DOUBLONS
+   ========================= */
+
+.duplicate-group {
+    background: #fff7ed;
+    border-radius: 12px;
+    padding: 14px;
+    margin-top: 12px;
+}
+
+.duplicate-title {
+    font-weight: bold;
+    margin-bottom: 8px;
+}
+
+.duplicate-file {
+    display: flex;
+    justify-content: space-between;
+    gap: 10px;
+    padding: 7px 0;
+    border-bottom: 1px solid #eee;
+}
+
+.duplicate-file:last-child {
+    border-bottom: none;
+}
+
+.duplicate-size {
+    font-weight: bold;
+    white-space: nowrap;
+}
+
+
+/* =========================
+   AUTRES OUTILS
+   ========================= */
+
+.tool-section {
+    margin-bottom: 18px;
+}
+
+.tool-toggle {
+    width: 100%;
+    border: none;
+    background: white;
+    border-radius: 16px;
+    padding: 18px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    font-size: 17px;
+    font-weight: bold;
+    cursor: pointer;
+    box-shadow: 0 3px 12px rgba(0,0,0,0.06);
+}
+
+.tool-toggle span:last-child {
+    font-size: 20px;
+}
+
+.other-tools {
+    display: none;
+    margin-top: 10px;
+}
+
+.other-tools.open {
+    display: block;
+}
+
+.tool-card {
+    background: white;
+    border-radius: 16px;
+    padding: 17px;
+    margin-bottom: 10px;
+    box-shadow: 0 3px 12px rgba(0,0,0,0.06);
+}
+
+.tool-card h3 {
+    font-size: 17px;
+    margin-bottom: 7px;
+}
+
+.tool-card p {
+    color: #666;
+    font-size: 14px;
+}
+
+</style>
+
+</head>
+
+
+<body>
+
+
+<header>
+
+    <h1>
+        📱 Mon Téléphone est Plein
+    </h1>
+
+    <p>
+        Trouvez rapidement ce qui prend de la place.
+    </p>
+
+</header>
+
+
+<main>
+
+
+<!-- =========================
+     🧹 NETTOYAGE
+     ========================= -->
+
+<div class="section-title">
+    🧹 Nettoyage
+</div>
+
+
+<!-- ANALYSE -->
+
+<div class="card">
+
+    <h2>
+        🔎 Analyser mes fichiers
+    </h2>
+
+    <p style="margin-top:10px;">
+        Sélectionnez plusieurs fichiers présents sur votre téléphone.
+    </p>
+
+    <label class="select-button">
+
+        📂 Sélectionner mes fichiers
+
+        <input
+            type="file"
+            id="fileInput"
+            multiple
+        >
+
+    </label>
+
+</div>
+
+
+<!-- ESPACE -->
+
+<div class="card storage">
+
+    <h2>
+        📊 Espace sélectionné
+    </h2>
+
+    <div
+        class="storage-number"
+        id="totalSize"
+    >
+        0 Mo
+    </div>
+
+    <p id="fileCount">
+        0 fichier
+    </p>
+
+    <div class="progress">
+
+        <div
+            class="progress-bar"
+            id="progressBar"
+        ></div>
+
+    </div>
+
+    <div
+        class="warning"
+        id="warning"
+    >
+        ⚠️ Vous avez sélectionné beaucoup de données.
+    </div>
+
+</div>
+
+
+<!-- PRIORITÉ -->
+
+<div class="card">
+
+    <h2>
+        🧹 À nettoyer en priorité
+    </h2>
+
+    <div id="priorityList">
+
+        <div class="empty">
+            Sélectionnez des fichiers pour commencer l'analyse.
+        </div>
+
+    </div>
+
+    <div
+        class="result"
+        id="priorityResult"
+        style="display:none;"
+    ></div>
+
+</div>
+
+
+<!-- DOUBLONS -->
+
+<div class="card">
+
+    <h2>
+        🔁 Fichiers en double
+    </h2>
+
+    <p style="margin-top:10px;color:#666;">
+        Nous recherchons les fichiers ayant le même contenu.
+    </p>
+
+    <div id="duplicateList">
+
+        <div class="empty">
+            Aucun fichier analysé.
+        </div>
+
+    </div>
+
+    <div
+        class="result"
+        id="duplicateResult"
+        style="display:none;"
+    ></div>
+
+</div>
+
+
+<!-- TOUS LES FICHIERS -->
+
+<div class="card">
+
+    <h2>
+        📁 Tous les fichiers
+    </h2>
+
+    <div id="fileList">
+
+        <div class="empty">
+            Aucun fichier sélectionné.
+        </div>
+
+    </div>
+
+</div>
+
+
+
+<!-- =========================
+     🖼️ IMAGES
+     ========================= -->
+
+<div class="section-title">
+    🖼️ Images
+</div>
+
+
+<!-- COMPRESSION -->
+
+<div class="card">
+
+    <h2>
+        🗜️ Compresser une image
+    </h2>
+
+    <p style="margin-top:10px;">
+        Réduisez la taille d'une image directement sur votre appareil.
+    </p>
+
+    <label class="select-button">
+
+        📷 Choisir une image
+
+        <input
+            type="file"
+            id="imageInput"
+            accept="image/*"
+        >
+
+    </label>
+
+
+    <div
+        id="compressionArea"
+        style="display:none;margin-top:20px;"
+    >
+
+        <p>
+            Taille originale :
+            <strong id="originalImageSize">
+                -
+            </strong>
+        </p>
+
+
+        <label
+            style="display:block;margin-top:15px;"
+        >
+
+            Niveau de compression :
+
+            <input
+                type="range"
+                id="qualityRange"
+                min="10"
+                max="100"
+                value="70"
+                style="width:100%;margin-top:10px;"
+            >
+
+        </label>
+
+
+        <p style="margin-top:8px;">
+
+            Qualité :
+
+            <strong id="qualityValue">
+                70%
+            </strong>
+
+        </p>
+
+
+        <button
+            id="compressButton"
+            style="
+                width:100%;
+                margin-top:15px;
+                padding:15px;
+                border:none;
+                border-radius:12px;
+                background:#F77F00;
+                color:white;
+                font-weight:bold;
+                font-size:16px;
+                cursor:pointer;
+            "
+        >
+
+            🗜️ Compresser l'image
+
+        </button>
+
+
+        <div
+            id="compressionResult"
+            style="
+                display:none;
+                margin-top:20px;
+                background:#f8f8f8;
+                padding:15px;
+                border-radius:12px;
+            "
+        >
+
+            <p>
+
+                Nouvelle taille :
+
+                <strong id="compressedImageSize">
+                    -
+                </strong>
+
+            </p>
+
+
+            <p
+                id="savedSpace"
+                style="
+                    margin-top:8px;
+                    font-weight:bold;
+                "
+            ></p>
+
+
+            <a
+                id="downloadCompressed"
+                download="image-compressee.jpg"
+                style="
+                    display:block;
+                    margin-top:15px;
+                    padding:15px;
+                    background:#F77F00;
+                    color:white;
+                    text-align:center;
+                    border-radius:12px;
+                    text-decoration:none;
+                    font-weight:bold;
+                "
+            >
+
+                ⬇️ Télécharger l'image compressée
+
+            </a>
+
+        </div>
+
+    </div>
+
+</div>
+
+
+<!-- CONVERSION -->
+
+<div class="card">
+
+    <h2>
+        🔄 Convertir une image
+    </h2>
+
+    <p style="margin-top:10px;">
+        Convertissez une image en JPG, PNG ou WebP.
+    </p>
+
+
+    <label class="select-button">
+
+        🖼️ Choisir une image
+
+        <input
+            type="file"
+            id="convertImageInput"
+            accept="image/*"
+        >
+
+    </label>
+
+
+    <div
+        id="convertArea"
+        style="display:none;margin-top:20px;"
+    >
+
+        <p>
+
+            Image sélectionnée :
+
+            <strong id="convertFileName">
+                -
+            </strong>
+
+        </p>
+
+
+        <p style="margin-top:10px;">
+
+            Taille originale :
+
+            <strong id="convertOriginalSize">
+                -
+            </strong>
+
+        </p>
+
+
+        <label
+            style="
+                display:block;
+                margin-top:15px;
+                font-weight:bold;
+            "
+        >
+
+            Format souhaité :
+
+            <select
+                id="formatSelect"
+                style="
+                    width:100%;
+                    margin-top:8px;
+                    padding:12px;
+                    border-radius:10px;
+                    border:1px solid #ddd;
+                    background:white;
+                    font-size:16px;
+                "
+            >
+
+                <option value="image/jpeg">
+                    JPG
+                </option>
+
+                <option value="image/png">
+                    PNG
+                </option>
+
+                <option value="image/webp">
+                    WebP
+                </option>
+
+            </select>
+
+        </label>
+
+
+        <button
+            id="convertButton"
+            style="
+                width:100%;
+                margin-top:15px;
+                padding:15px;
+                border:none;
+                border-radius:12px;
+                background:#F77F00;
+                color:white;
+                font-weight:bold;
+                font-size:16px;
+                cursor:pointer;
+            "
+        >
+
+            🔄 Convertir l'image
+
+        </button>
+
+
+        <div
+            id="convertResult"
+            style="
+                display:none;
+                margin-top:20px;
+                background:#f8f8f8;
+                padding:15px;
+                border-radius:12px;
+            "
+        >
+
+            <p>
+
+                Nouvelle taille :
+
+                <strong id="convertedSize">
+                    -
+                </strong>
+
+            </p>
+
+
+            <a
+                id="downloadConverted"
+                style="
+                    display:block;
+                    margin-top:15px;
+                    padding:15px;
+                    background:#F77F00;
+                    color:white;
+                    text-align:center;
+                    border-radius:12px;
+                    text-decoration:none;
+                    font-weight:bold;
+                "
+            >
+
+                ⬇️ Télécharger l'image
+
+            </a>
+
+        </div>
+
+    </div>
+
+</div>
+
+
+
+<!-- =========================
+     📄 PDF
+     ========================= -->
+
+<div class="section-title">
+    📄 PDF
+</div>
+
+
+<div class="card">
+
+    <h2>
+        ⚙️ Optimiser un PDF
+    </h2>
+
+    <p style="margin-top:10px;">
+        Réduisez la taille de certains fichiers PDF directement
+        dans votre navigateur.
+    </p>
+
+
+    <label class="select-button">
+
+        📄 Choisir un PDF
+
+        <input
+            type="file"
+            id="pdfInput"
+            accept="application/pdf"
+        >
+
+    </label>
+
+
+    <div
+        id="pdfArea"
+        style="display:none;margin-top:20px;"
+    >
+
+        <p>
+
+            Taille originale :
+
+            <strong id="pdfOriginalSize">
+                -
+            </strong>
+
+        </p>
+
+
+        <button
+            id="optimizePdfButton"
+            style="
+                width:100%;
+                margin-top:15px;
+                padding:15px;
+                border:none;
+                border-radius:12px;
+                background:#F77F00;
+                color:white;
+                font-weight:bold;
+                font-size:16px;
+            "
+        >
+
+            ⚙️ Optimiser le PDF
+
+        </button>
+
+
+        <p
+            id="pdfStatus"
+            style="
+                margin-top:15px;
+                text-align:center;
+            "
+        ></p>
+
+
+        <div
+            id="pdfResult"
+            style="
+                display:none;
+                margin-top:15px;
+                background:#f8f8f8;
+                padding:15px;
+                border-radius:12px;
+            "
+        >
+
+            <p>
+
+                Nouvelle taille :
+
+                <strong id="pdfNewSize">
+                    -
+                </strong>
+
+            </p>
+
+
+            <p
+                id="pdfSaved"
+                style="
+                    margin-top:8px;
+                    font-weight:bold;
+                "
+            ></p>
+
+
+            <a
+                id="downloadPdf"
+                download="document-optimise.pdf"
+                style="
+                    display:block;
+                    margin-top:15px;
+                    padding:15px;
+                    background:#F77F00;
+                    color:white;
+                    text-align:center;
+                    border-radius:12px;
+                    text-decoration:none;
+                    font-weight:bold;
+                "
+            >
+
+                ⬇️ Télécharger le PDF
+
+            </a>
+
+        </div>
+
+    </div>
+
+</div>
+
+
+
+<!-- =========================
+     🛠️ AUTRES OUTILS
+     ========================= -->
+
+<div class="section-title">
+    🛠️ Outils supplémentaires
+</div>
+
+
+<div class="tool-section">
+
+    <button
+        class="tool-toggle"
+        id="otherToolsButton"
+        type="button"
+    >
+
+        <span>
+            🛠️ Autres outils
+        </span>
+
+        <span id="otherToolsArrow">
+            ▼
+        </span>
+
+    </button>
+
+
+    <div
+        class="other-tools"
+        id="otherTools"
+    >
+
+
+        <div class="tool-card">
+
+    <h3>🔗 Générateur de QR Code</h3>
+
+    <p style="margin-bottom:12px;">
+        Transformez un texte ou un lien en QR Code.
+    </p>
+
+    <input
+        type="text"
+        id="qrText"
+        placeholder="Entrez un texte ou un lien..."
+        style="
+            width:100%;
+            padding:13px;
+            border:1px solid #ddd;
+            border-radius:10px;
+            font-size:15px;
+        "
+    >
+
+    <button
+        id="generateQRButton"
+        style="
+            width:100%;
+            margin-top:12px;
+            padding:14px;
+            border:none;
+            border-radius:12px;
+            background:#F77F00;
+            color:white;
+            font-weight:bold;
+            font-size:16px;
+            cursor:pointer;
+        "
+    >
+        🔗 Générer le QR Code
+    </button>
+
+    <div
+        id="qrResult"
+        style="
+            display:none;
+            margin-top:18px;
+            text-align:center;
+        "
+    >
+
+        <img
+            id="qrImage"
+            alt="QR Code généré"
+            style="
+                max-width:220px;
+                width:100%;
+                border-radius:10px;
+            "
+        >
+
+        <a
+            id="downloadQR"
+            download="qrcode.png"
+            style="
+                display:block;
+                margin-top:15px;
+                padding:14px;
+                background:#F77F00;
+                color:white;
+                text-decoration:none;
+                border-radius:12px;
+                font-weight:bold;
+            "
+        >
+            ⬇️ Télécharger le QR Code
+        </a>
+
+    </div>
+
+</div>
+
+
+        <div class="tool-card">
+
+    <h3>📦 Créer un fichier ZIP</h3>
+
+    <p style="margin-bottom:12px;">
+        Regroupez plusieurs fichiers dans une seule archive ZIP.
+    </p>
+
+    <label class="select-button">
+
+        📂 Choisir les fichiers
+
+        <input
+            type="file"
+            id="zipInput"
+            multiple
+        >
+
+    </label>
+
+    <div
+        id="zipArea"
+        style="
+            display:none;
+            margin-top:15px;
+        "
+    >
+
+        <p id="zipFileCount">
+            0 fichier
+        </p>
+
+        <button
+            id="createZipButton"
+            style="
+                width:100%;
+                margin-top:12px;
+                padding:14px;
+                border:none;
+                border-radius:12px;
+                background:#F77F00;
+                color:white;
+                font-weight:bold;
+                font-size:16px;
+                cursor:pointer;
+            "
+        >
+            📦 Créer le fichier ZIP
+        </button>
+
+        <p
+            id="zipStatus"
+            style="
+                margin-top:12px;
+                text-align:center;
+            "
+        ></p>
+
+        <a
+            id="downloadZip"
+            download="mes-fichiers.zip"
+            style="
+                display:none;
+                margin-top:12px;
+                padding:14px;
+                background:#F77F00;
+                color:white;
+                text-align:center;
+                border-radius:12px;
+                text-decoration:none;
+                font-weight:bold;
+            "
+        >
+            ⬇️ Télécharger le ZIP
+        </a>
+
+    </div>
+
+</div>
+
+
+        <div class="tool-card">
+
+    <h3>🔐 Générateur de mot de passe</h3>
+
+    <p style="margin-bottom:12px;">
+        Créez rapidement un mot de passe aléatoire.
+    </p>
+
+    <button
+        id="generatePasswordButton"
+        style="
+            width:100%;
+            padding:14px;
+            border:none;
+            border-radius:12px;
+            background:#F77F00;
+            color:white;
+            font-weight:bold;
+            font-size:16px;
+            cursor:pointer;
+        "
+    >
+        🔐 Générer un mot de passe
+    </button>
+
+    <div
+        id="passwordResult"
+        style="
+            display:none;
+            margin-top:15px;
+            background:#f8f8f8;
+            padding:12px;
+            border-radius:12px;
+            word-break:break-all;
+        "
+    >
+
+        <strong id="generatedPassword"></strong>
+
+        <button
+            id="copyPasswordButton"
+            style="
+                width:100%;
+                margin-top:12px;
+                padding:12px;
+                border:none;
+                border-radius:10px;
+                background:#eee;
+                font-weight:bold;
+                cursor:pointer;
+            "
+        >
+            📋 Copier
+        </button>
+
+    </div>
+
+</div>
+
+
+    </div>
+
+</div>
+
+
+</main>
+
+
+
+<script>
+
+/* =========================
+   ANALYSE DES FICHIERS
+   ========================= */
+
+const fileInput =
+    document.getElementById("fileInput");
+
+const totalSize =
+    document.getElementById("totalSize");
+
+const fileCount =
+    document.getElementById("fileCount");
+
+const fileList =
+    document.getElementById("fileList");
+
+const progressBar =
+    document.getElementById("progressBar");
+
+const warning =
+    document.getElementById("warning");
+
+const priorityList =
+    document.getElementById("priorityList");
+
+const priorityResult =
+    document.getElementById("priorityResult");
+
+const duplicateList =
+    document.getElementById("duplicateList");
+
+const duplicateResult =
+    document.getElementById("duplicateResult");
+
+
+fileInput.addEventListener(
+    "change",
+    function () {
+
+        const files =
+            Array.from(this.files);
+
+        if (files.length === 0) {
+            return;
+        }
+
+        let total = 0;
+
+        files.forEach(file => {
+            total += file.size;
+        });
+
+        afficherTaille(total);
+
+        fileCount.textContent =
+            files.length +
+            (
+                files.length > 1
+                    ? " fichiers"
+                    : " fichier"
+            );
+
+        afficherFichiers(files);
+
+        analyserPriorite(files);
+
+        detecterDoublons(files);
+
+
+        const pourcentage =
+            Math.min(
+                (
+                    total /
+                    (
+                        1024 *
+                        1024 *
+                        1000
+                    )
+                ) * 100,
+                100
+            );
+
+        progressBar.style.width =
+            pourcentage + "%";
+
+
+        if (
+            total >
+            500 *
+            1024 *
+            1024
+        ) {
+
+            warning.style.display =
+                "block";
+
+        } else {
+
+            warning.style.display =
+                "none";
+
+        }
+
+    }
+);
+
+
+/* =========================
+   AFFICHER TAILLE
+   ========================= */
+
+function afficherTaille(octets) {
+
+    if (octets < 1024) {
+
+        totalSize.textContent =
+            octets + " octets";
+
+    }
+
+    else if (
+        octets <
+        1024 * 1024
+    ) {
+
+        totalSize.textContent =
+            (
+                octets / 1024
+            ).toFixed(1) +
+            " Ko";
+
+    }
+
+    else if (
+        octets <
+        1024 *
+        1024 *
+        1024
+    ) {
+
+        totalSize.textContent =
+            (
+                octets /
+                (
+                    1024 *
+                    1024
+                )
+            ).toFixed(1) +
+            " Mo";
+
+    }
+
+    else {
+
+        totalSize.textContent =
+            (
+                octets /
+                (
+                    1024 *
+                    1024 *
+                    1024
+                )
+            ).toFixed(2) +
+            " Go";
+
+    }
+
+}
+
+
+/* =========================
+   FORMATER TAILLE
+   ========================= */
+
+function formaterTaille(octets) {
+
+    if (octets < 1024) {
+        return octets + " o";
+    }
+
+    if (
+        octets <
+        1024 * 1024
+    ) {
+
+        return (
+            octets / 1024
+        ).toFixed(1) + " Ko";
+
+    }
+
+    if (
+        octets <
+        1024 *
+        1024 *
+        1024
+    ) {
+
+        return (
+            octets /
+            (
+                1024 *
+                1024
+            )
+        ).toFixed(1) + " Mo";
+
+    }
+
+    return (
+        octets /
+        (
+            1024 *
+            1024 *
+            1024
+        )
+    ).toFixed(2) + " Go";
+
+}
+
+
+/* =========================
+   AFFICHER FICHIERS
+   ========================= */
+
+function afficherFichiers(files) {
+
+    fileList.innerHTML = "";
+
+    const fichiersTries =
+        [...files].sort(
+            (a, b) =>
+                b.size -
+                a.size
+        );
+
+
+    fichiersTries.forEach(
+        file => {
+
+            const element =
+                document.createElement(
+                    "div"
+                );
+
+            element.className =
+                "file";
+
+
+            element.innerHTML = `
+
+                <div class="file-name">
+                    ${echapperHTML(file.name)}
+                </div>
+
+                <div class="file-size">
+                    ${formaterTaille(file.size)}
+                </div>
+
+            `;
+
+
+            fileList.appendChild(
+                element
+            );
+
+        }
+    );
+
+}
+
+
+/* =========================
+   FICHIERS LOURDS
+   ========================= */
+
+function analyserPriorite(files) {
+
+    priorityList.innerHTML = "";
+
+    priorityResult.style.display =
+        "none";
+
+
+    const fichiersTries =
+        [...files].sort(
+            (a, b) =>
+                b.size -
+                a.size
+        );
+
+
+    const plusLourds =
+        fichiersTries.slice(
+            0,
+            5
+        );
+
+
+    let totalPriorite = 0;
+
+
+    plusLourds.forEach(
+        file => {
+
+            totalPriorite +=
+                file.size;
+
+
+            const element =
+                document.createElement(
+                    "div"
+                );
+
+
+            element.className =
+                "priority-item";
+
+
+            element.innerHTML = `
+
+                <div class="priority-name">
+                    ${echapperHTML(file.name)}
+                </div>
+
+                <div class="priority-size">
+                    ${formaterTaille(file.size)}
+                </div>
+
+            `;
+
+
+            priorityList.appendChild(
+                element
+            );
+
+        }
+    );
+
+
+    if (plusLourds.length > 0) {
+
+        priorityResult.style.display =
+            "block";
+
+
+        priorityResult.textContent =
+            "💡 Les " +
+            plusLourds.length +
+            " fichiers les plus lourds occupent " +
+            formaterTaille(
+                totalPriorite
+            ) +
+            ".";
+
+    }
+
+}
+
+
+/* =========================
+   DOUBLONS
+   ========================= */
+
+async function detecterDoublons(files) {
+
+    duplicateList.innerHTML = "";
+
+    duplicateResult.style.display =
+        "none";
+
+
+    const groupesParTaille = {};
+
+
+    files.forEach(file => {
+
+        if (!groupesParTaille[file.size]) {
+            groupesParTaille[file.size] = [];
+        }
+
+        groupesParTaille[file.size].push(file);
+
+    });
+
+
+    const candidats =
+        Object.values(
+            groupesParTaille
+        ).filter(
+            groupe =>
+                groupe.length > 1
+        );
+
+
+    if (candidats.length === 0) {
+
+        duplicateList.innerHTML = `
+            <div class="empty">
+                ✅ Aucun doublon potentiel trouvé.
+            </div>
+        `;
+
+        return;
+    }
+
+
+    duplicateList.innerHTML = `
+        <div class="empty">
+            🔎 Vérification du contenu des fichiers...
+        </div>
+    `;
+
+
+    const groupesHash = {};
+
+
+    for (
+        const groupe of candidats
+    ) {
+
+        for (
+            const file of groupe
+        ) {
+
+            try {
+
+                const buffer =
+                    await file.arrayBuffer();
+
+
+                const hashBuffer =
+                    await crypto.subtle.digest(
+                        "SHA-256",
+                        buffer
+                    );
+
+
+                const hashArray =
+                    Array.from(
+                        new Uint8Array(
+                            hashBuffer
+                        )
+                    );
+
+
+                const hash =
+                    hashArray
+                        .map(
+                            byte =>
+                                byte
+                                    .toString(16)
+                                    .padStart(
+                                        2,
+                                        "0"
+                                    )
+                        )
+                        .join("");
+
+
+                if (!groupesHash[hash]) {
+                    groupesHash[hash] = [];
+                }
+
+
+                groupesHash[hash].push(
+                    file
+                );
+
+
+            } catch (erreur) {
+
+                console.log(
+                    "Impossible de calculer le hash :",
+                    file.name
+                );
+
+            }
+
+        }
+
+    }
+
+
+    const vraisDoublons =
+        Object.values(
+            groupesHash
+        ).filter(
+            groupe =>
+                groupe.length > 1
+        );
+
+
+    duplicateList.innerHTML = "";
+
+
+    if (vraisDoublons.length === 0) {
+
+        duplicateList.innerHTML = `
+            <div class="empty">
+                ✅ Aucun vrai doublon trouvé.
+            </div>
+        `;
+
+        return;
+    }
+
+
+    let espaceRecuperable = 0;
+
+
+    vraisDoublons.forEach(
+        groupe => {
+
+            const element =
+                document.createElement(
+                    "div"
+                );
+
+
+            element.className =
+                "duplicate-group";
+
+
+            const titre =
+                document.createElement(
+                    "div"
+                );
+
+
+            titre.className =
+                "duplicate-title";
+
+
+            titre.textContent =
+                "🔁 " +
+                groupe.length +
+                " fichiers identiques";
+
+
+            element.appendChild(
+                titre
+            );
+
+
+            groupe.forEach(
+                file => {
+
+                    const ligne =
+                        document.createElement(
+                            "div"
+                        );
+
+
+                    ligne.className =
+                        "duplicate-file";
+
+
+                    ligne.innerHTML = `
+
+                        <span>
+                            ${echapperHTML(file.name)}
+                        </span>
+
+                        <span class="duplicate-size">
+                            ${formaterTaille(file.size)}
+                        </span>
+
+                    `;
+
+
+                    element.appendChild(
+                        ligne
+                    );
+
+                }
+            );
+
+
+            espaceRecuperable +=
+                groupe[0].size *
+                (
+                    groupe.length - 1
+                );
+
+
+            duplicateList.appendChild(
+                element
+            );
+
+        }
+    );
+
+
+    duplicateResult.style.display =
+        "block";
+
+
+    duplicateResult.textContent =
+        "💾 Espace potentiellement récupérable : " +
+        formaterTaille(
+            espaceRecuperable
+        ) +
+        ".";
+
+}
+
+
+/* =========================
+   PROTECTION HTML
+   ========================= */
+
+function echapperHTML(texte) {
+
+    const div =
+        document.createElement(
+            "div"
+        );
+
+    div.textContent =
+        texte;
+
+    return div.innerHTML;
+
+}
+
+
+
+/* =========================
+   COMPRESSION IMAGE
+   ========================= */
+
+const imageInput =
+    document.getElementById(
+        "imageInput"
+    );
+
+const compressionArea =
+    document.getElementById(
+        "compressionArea"
+    );
+
+const qualityRange =
+    document.getElementById(
+        "qualityRange"
+    );
+
+const qualityValue =
+    document.getElementById(
+        "qualityValue"
+    );
+
+const compressButton =
+    document.getElementById(
+        "compressButton"
+    );
+
+const originalImageSize =
+    document.getElementById(
+        "originalImageSize"
+    );
+
+const compressedImageSize =
+    document.getElementById(
+        "compressedImageSize"
+    );
+
+const compressionResult =
+    document.getElementById(
+        "compressionResult"
+    );
+
+const savedSpace =
+    document.getElementById(
+        "savedSpace"
+    );
+
+const downloadCompressed =
+    document.getElementById(
+        "downloadCompressed"
+    );
+
+
+let imageOriginale = null;
+
+
+imageInput.addEventListener(
+    "change",
+    function () {
+
+        const fichier =
+            this.files[0];
+
+
+        if (!fichier) {
+            return;
+        }
+
+
+        imageOriginale =
+            fichier;
+
+
+        compressionArea.style.display =
+            "block";
+
+
+        compressionResult.style.display =
+            "none";
+
+
+        originalImageSize.textContent =
+            formaterTaille(
+                fichier.size
+            );
+
+    }
+);
+
+
+qualityRange.addEventListener(
+    "input",
+    function () {
+
+        qualityValue.textContent =
+            this.value + "%";
+
+    }
+);
+
+
+compressButton.addEventListener(
+    "click",
+    function () {
+
+        if (!imageOriginale) {
+            return;
+        }
+
+
+        const image =
+            new Image();
+
+
+        const lecteur =
+            new FileReader();
+
+
+        lecteur.onload =
+            function (event) {
+
+                image.onload =
+                    function () {
+
+                        const canvas =
+                            document.createElement(
+                                "canvas"
+                            );
+
+
+                        const contexte =
+                            canvas.getContext(
+                                "2d"
+                            );
+
+
+                        canvas.width =
+                            image.width;
+
+
+                        canvas.height =
+                            image.height;
+
+
+                        contexte.drawImage(
+                            image,
+                            0,
+                            0
+                        );
+
+
+                        const qualite =
+                            Number(
+                                qualityRange.value
+                            ) / 100;
+
+
+                        canvas.toBlob(
+                            function (blob) {
+
+                                if (!blob) {
+                                    return;
+                                }
+
+
+                                compressedImageSize
+                                    .textContent =
+                                    formaterTaille(
+                                        blob.size
+                                    );
+
+
+                                const economie =
+                                    imageOriginale.size -
+                                    blob.size;
+
+
+                                if (
+                                    economie > 0
+                                ) {
+
+                                    savedSpace.textContent =
+                                        "💾 Espace économisé : " +
+                                        formaterTaille(
+                                            economie
+                                        );
+
+                                } else {
+
+                                    savedSpace.textContent =
+                                        "ℹ️ Cette compression n'a pas réduit la taille.";
+
+                                }
+
+
+                                const url =
+                                    URL.createObjectURL(
+                                        blob
+                                    );
+
+
+                                downloadCompressed.href =
+                                    url;
+
+
+                                compressionResult.style.display =
+                                    "block";
+
+                            },
+                            "image/jpeg",
+                            qualite
+                        );
+
+                    };
+
+
+                image.src =
+                    event.target.result;
+
+            };
+
+
+        lecteur.readAsDataURL(
+            imageOriginale
+        );
+
+    }
+);
+
+
+
+/* =========================
+   PDF
+   ========================= */
+
+const pdfInput =
+    document.getElementById(
+        "pdfInput"
+    );
+
+const pdfArea =
+    document.getElementById(
+        "pdfArea"
+    );
+
+const pdfOriginalSize =
+    document.getElementById(
+        "pdfOriginalSize"
+    );
+
+const optimizePdfButton =
+    document.getElementById(
+        "optimizePdfButton"
+    );
+
+const pdfStatus =
+    document.getElementById(
+        "pdfStatus"
+    );
+
+const pdfResult =
+    document.getElementById(
+        "pdfResult"
+    );
+
+const pdfNewSize =
+    document.getElementById(
+        "pdfNewSize"
+    );
+
+const pdfSaved =
+    document.getElementById(
+        "pdfSaved"
+    );
+
+const downloadPdf =
+    document.getElementById(
+        "downloadPdf"
+    );
+
+
+let pdfOriginal = null;
+
+
+pdfInput.addEventListener(
+    "change",
+    function () {
+
+        const fichier =
+            this.files[0];
+
+
+        if (!fichier) {
+            return;
+        }
+
+
+        pdfOriginal =
+            fichier;
+
+
+        pdfArea.style.display =
+            "block";
+
+
+        pdfResult.style.display =
+            "none";
+
+
+        pdfStatus.textContent =
+            "";
+
+
+        pdfOriginalSize.textContent =
+            formaterTaille(
+                fichier.size
+            );
+
+    }
+);
+
+
+optimizePdfButton.addEventListener(
+    "click",
+    async function () {
+
+        if (!pdfOriginal) {
+            return;
+        }
+
+
+        try {
+
+            optimizePdfButton.disabled =
+                true;
+
+
+            pdfStatus.textContent =
+                "⏳ Optimisation en cours...";
+
+
+            const bytes =
+                await pdfOriginal.arrayBuffer();
+
+
+            const documentPDF =
+                await PDFLib.PDFDocument.load(
+                    bytes
+                );
+
+
+            const nouveauPDF =
+                await PDFLib.PDFDocument.create();
+
+
+            const pages =
+                await nouveauPDF.copyPages(
+                    documentPDF,
+                    documentPDF.getPageIndices()
+                );
+
+
+            pages.forEach(
+                page => {
+                    nouveauPDF.addPage(page);
+                }
+            );
+
+
+            const nouveauxOctets =
+                await nouveauPDF.save({
+                    useObjectStreams: true
+                });
+
+
+            const nouvelleTaille =
+                nouveauxOctets.length;
+
+
+            pdfStatus.textContent =
+                "";
+
+
+            pdfResult.style.display =
+                "block";
+
+
+            pdfNewSize.textContent =
+                formaterTaille(
+                    nouvelleTaille
+                );
+
+
+            const blob =
+                new Blob(
+                    [nouveauxOctets],
+                    {
+                        type:
+                            "application/pdf"
+                    }
+                );
+
+
+            const url =
+                URL.createObjectURL(
+                    blob
+                );
+
+
+            downloadPdf.href =
+                url;
+
+
+            if (
+                nouvelleTaille >=
+                pdfOriginal.size
+            ) {
+
+                pdfSaved.textContent =
+                    "ℹ️ Ce PDF ne peut pas être réduit davantage avec cet outil.";
+
+
+                downloadPdf.textContent =
+                    "⬇️ Télécharger la version optimisée";
+
+            } else {
+
+                const economie =
+                    pdfOriginal.size -
+                    nouvelleTaille;
+
+
+                pdfSaved.textContent =
+                    "💾 Espace économisé : " +
+                    formaterTaille(
+                        economie
+                    );
+
+
+                downloadPdf.textContent =
+                    "⬇️ Télécharger le PDF optimisé";
+
+            }
+
+
+        } catch (erreur) {
+
+            console.error(
+                erreur
+            );
+
+
+            pdfStatus.textContent =
+                "❌ Impossible d'optimiser ce PDF.";
+
+
+            pdfResult.style.display =
+                "none";
+
+
+        } finally {
+
+            optimizePdfButton.disabled =
+                false;
+
+        }
+
+    }
+);
+
+
+
+/* =========================
+   CONVERSION IMAGE
+   ========================= */
+
+const convertImageInput =
+    document.getElementById(
+        "convertImageInput"
+    );
+
+const convertArea =
+    document.getElementById(
+        "convertArea"
+    );
+
+const convertFileName =
+    document.getElementById(
+        "convertFileName"
+    );
+
+const convertOriginalSize =
+    document.getElementById(
+        "convertOriginalSize"
+    );
+
+const formatSelect =
+    document.getElementById(
+        "formatSelect"
+    );
+
+const convertButton =
+    document.getElementById(
+        "convertButton"
+    );
+
+const convertResult =
+    document.getElementById(
+        "convertResult"
+    );
+
+const convertedSize =
+    document.getElementById(
+        "convertedSize"
+    );
+
+const downloadConverted =
+    document.getElementById(
+        "downloadConverted"
+    );
+
+
+let imageAConvertir = null;
+
+
+convertImageInput.addEventListener(
+    "change",
+    function () {
+
+        const fichier =
+            this.files[0];
+
+
+        if (!fichier) {
+            return;
+        }
+
+
+        imageAConvertir =
+            fichier;
+
+
+        convertArea.style.display =
+            "block";
+
+
+        convertResult.style.display =
+            "none";
+
+
+        convertFileName.textContent =
+            fichier.name;
+
+
+        convertOriginalSize.textContent =
+            formaterTaille(
+                fichier.size
+            );
+
+    }
+);
+
+
+convertButton.addEventListener(
+    "click",
+    function () {
+
+        if (!imageAConvertir) {
+            return;
+        }
+
+
+        const lecteur =
+            new FileReader();
+
+
+        lecteur.onload =
+            function (event) {
+
+                const image =
+                    new Image();
+
+
+                image.onload =
+                    function () {
+
+                        const canvas =
+                            document.createElement(
+                                "canvas"
+                            );
+
+
+                        const contexte =
+                            canvas.getContext(
+                                "2d"
+                            );
+
+
+                        canvas.width =
+                            image.width;
+
+
+                        canvas.height =
+                            image.height;
+
+
+                        contexte.drawImage(
+                            image,
+                            0,
+                            0
+                        );
+
+
+                        const format =
+                            formatSelect.value;
+
+
+                        canvas.toBlob(
+                            function (blob) {
+
+                                if (!blob) {
+
+                                    alert(
+                                        "Impossible de convertir cette image."
+                                    );
+
+                                    return;
+
+                                }
+
+
+                                convertedSize.textContent =
+                                    formaterTaille(
+                                        blob.size
+                                    );
+
+
+                                const url =
+                                    URL.createObjectURL(
+                                        blob
+                                    );
+
+
+                                downloadConverted.href =
+                                    url;
+
+
+                                let extension =
+                                    "jpg";
+
+
+                                if (
+                                    format ===
+                                    "image/png"
+                                ) {
+
+                                    extension =
+                                        "png";
+
+                                }
+
+
+                                if (
+                                    format ===
+                                    "image/webp"
+                                ) {
+
+                                    extension =
+                                        "webp";
+                                    
+                                }
+
+
+                                downloadConverted.download =
+                                    "image-convertie." +
+                                    extension;
+
+
+                                convertResult.style.display =
+                                    "block";
+
+                            },
+                            format,
+                            0.9
+                        );
+
+                    };
+
+
+                image.src =
+                    event.target.result;
+
+            };
+
+
+        lecteur.readAsDataURL(
+            imageAConvertir
+        );
+
+    }
+);
+
+
+
+/* =========================
+   MENU AUTRES OUTILS
+   ========================= */
+
+const otherToolsButton =
+    document.getElementById(
+        "otherToolsButton"
+    );
+
+const otherTools =
+    document.getElementById(
+        "otherTools"
+    );
+
+const otherToolsArrow =
+    document.getElementById(
+        "otherToolsArrow"
+    );
+
+
+otherToolsButton.addEventListener(
+    "click",
+    function () {
+
+        otherTools.classList.toggle(
+            "open"
+        );
+
+
+        if (
+            otherTools.classList.contains(
+                "open"
+            )
+        ) {
+
+            otherToolsArrow.textContent =
+                "▲";
+
+        } else {
+
+            otherToolsArrow.textContent =
+                "▼";
+
+        }
+
+    }
+);
+    
+    /* =========================
+   GÉNÉRATEUR DE MOT DE PASSE
+   ========================= */
+
+const generatePasswordButton =
+    document.getElementById(
+        "generatePasswordButton"
+    );
+
+const passwordResult =
+    document.getElementById(
+        "passwordResult"
+    );
+
+const generatedPassword =
+    document.getElementById(
+        "generatedPassword"
+    );
+
+const copyPasswordButton =
+    document.getElementById(
+        "copyPasswordButton"
+    );
+
+
+function genererMotDePasse() {
+
+    const caracteres =
+        "ABCDEFGHIJKLMNOPQRSTUVWXYZ" +
+        "abcdefghijklmnopqrstuvwxyz" +
+        "0123456789" +
+        "!@#$%^&*";
+
+
+    const longueur = 16;
+
+    let motDePasse = "";
+
+
+    for (
+        let i = 0;
+        i < longueur;
+        i++
+    ) {
+
+        const index =
+            Math.floor(
+                Math.random() *
+                caracteres.length
+            );
+
+        motDePasse +=
+            caracteres[index];
+
+    }
+
+
+    generatedPassword.textContent =
+        motDePasse;
+
+    passwordResult.style.display =
+        "block";
+
+}
+
+
+generatePasswordButton.addEventListener(
+    "click",
+    genererMotDePasse
+);
+
+
+copyPasswordButton.addEventListener(
+    "click",
+    async function () {
+
+        const motDePasse =
+            generatedPassword.textContent;
+
+        try {
+
+            await navigator.clipboard.writeText(
+                motDePasse
+            );
+
+            copyPasswordButton.textContent =
+                "✅ Copié !";
+
+
+            setTimeout(
+                function () {
+
+                    copyPasswordButton.textContent =
+                        "📋 Copier";
+
+                },
+                1500
+            );
+
+        } catch (erreur) {
+
+            alert(
+                "Impossible de copier automatiquement."
+            );
+
+        }
+
+    }
+);
+    
+    /* =========================
+   GÉNÉRATEUR QR CODE
+   ========================= */
+
+const qrText =
+    document.getElementById("qrText");
+
+const generateQRButton =
+    document.getElementById(
+        "generateQRButton"
+    );
+
+const qrResult =
+    document.getElementById("qrResult");
+
+const qrImage =
+    document.getElementById("qrImage");
+
+const downloadQR =
+    document.getElementById("downloadQR");
+
+
+generateQRButton.addEventListener(
+    "click",
+    function () {
+
+        const texte =
+            qrText.value.trim();
+
+        if (!texte) {
+
+            alert(
+                "Entrez d'abord un texte ou un lien."
+            );
+
+            return;
+        }
+
+
+        const url =
+            "https://api.qrserver.com/v1/create-qr-code/?size=300x300&data=" +
+            encodeURIComponent(texte);
+
+
+        qrImage.src = url;
+
+        downloadQR.href = url;
+
+        qrResult.style.display =
+            "block";
+
+    }
+);
+
+/* =========================
+   CRÉATEUR DE FICHIER ZIP
+   ========================= */
+
+const zipInput =
+    document.getElementById("zipInput");
+
+const zipArea =
+    document.getElementById("zipArea");
+
+const zipFileCount =
+    document.getElementById("zipFileCount");
+
+const createZipButton =
+    document.getElementById("createZipButton");
+
+const zipStatus =
+    document.getElementById("zipStatus");
+
+const downloadZip =
+    document.getElementById("downloadZip");
+
+
+let fichiersZIP = [];
+
+
+zipInput.addEventListener(
+    "change",
+    function () {
+
+        fichiersZIP =
+            Array.from(this.files);
+
+
+        if (fichiersZIP.length === 0) {
+
+            zipArea.style.display =
+                "none";
+
+            return;
+        }
+
+
+        zipArea.style.display =
+            "block";
+
+
+        zipFileCount.textContent =
+            fichiersZIP.length +
+            (
+                fichiersZIP.length > 1
+                    ? " fichiers sélectionnés"
+                    : " fichier sélectionné"
+            );
+
+
+        zipStatus.textContent = "";
+
+        downloadZip.style.display =
+            "none";
+
+    }
+);
+
+
+createZipButton.addEventListener(
+    "click",
+    async function () {
+
+        if (fichiersZIP.length === 0) {
+            return;
+        }
+
+
+        try {
+
+            createZipButton.disabled =
+                true;
+
+            zipStatus.textContent =
+                "⏳ Création du ZIP...";
+
+
+            const zip =
+                new JSZip();
+
+
+            fichiersZIP.forEach(
+                fichier => {
+
+                    zip.file(
+                        fichier.name,
+                        fichier
+                    );
+
+                }
+            );
+
+
+            const contenuZIP =
+                await zip.generateAsync({
+                    type: "blob"
+                });
+
+
+            const url =
+                URL.createObjectURL(
+                    contenuZIP
+                );
+
+
+            downloadZip.href =
+                url;
+
+
+            downloadZip.style.display =
+                "block";
+
+
+            zipStatus.textContent =
+                "✅ ZIP créé avec succès !";
+
+
+        } catch (erreur) {
+
+            console.error(erreur);
+
+            zipStatus.textContent =
+                "❌ Impossible de créer le ZIP.";
+
+        } finally {
+
+            createZipButton.disabled =
+                false;
+
+        }
+
+    }
+);    
+    
+</script>
+
+</body>
+</html>
